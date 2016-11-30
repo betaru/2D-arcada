@@ -6,6 +6,7 @@ TagManager:
   tags:
   - star
   - enemy
+  - endLevel
   layers:
   - Default
   - TransparentFX

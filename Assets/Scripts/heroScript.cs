@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class heroScript : MonoBehaviour {
@@ -11,7 +12,7 @@ public class heroScript : MonoBehaviour {
 	public Transform groundCheck;
 	public float groundRadius = 0.2f;
 	public LayerMask whatIsGround;
-	public int score = 0;
+	public int score = 4;
 	float posX, posY;
 
 
@@ -56,6 +57,9 @@ public class heroScript : MonoBehaviour {
 	void OnCollisionEnter2D (Collision2D col) {
 		if (col.gameObject.tag == "enemy") {
 			rig.position = new Vector2 (posX, posY);
+		} else if (col.gameObject.tag == "endLevel" && score == 0) {
+			int idCurrentScene = SceneManager.GetActiveScene ().buildIndex + 1;
+			SceneManager.LoadScene (idCurrentScene);
 		}
 	}
 
@@ -63,11 +67,11 @@ public class heroScript : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.GetComponent<PolygonCollider2D> ().tag == "star") {
 			Destroy (col.gameObject);
-			score++;
+			score--;
 		}
 	}
 
 	void OnGUI() {
-		GUI.Box (new Rect(0,0,100,100), "Score = " + score);		
+		GUI.Box (new Rect(0,0,200,70), "Score = " + score);		
 	}
 }
