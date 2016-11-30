@@ -11,20 +11,28 @@ public class heroScript : MonoBehaviour {
 	public Transform groundCheck;
 	public float groundRadius = 0.2f;
 	public LayerMask whatIsGround;
-
+	public int score = 0;
+	float posX, posY;
 
 
 	// Use this for initialization
 	void Start () {
 		rig = GetComponent<Rigidbody2D>();
+		posX = rig.position.x;
+		posY = rig.position.y;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
 		grounded = Physics2D.OverlapCircle (groundCheck.position, groundRadius, whatIsGround);
+
 		float move = Input.GetAxis ("Horizontal");
-		rig.velocity = new Vector2 (move * speed, rig.velocity.y);
+
+//		if (grounded) {			
+			rig.velocity = new Vector2 (move * speed, rig.velocity.y);			
+//		}
+
 
 		if (Input.GetKeyDown (KeyCode.Space) && grounded) {
 			rig.AddForce(new Vector2(0, jumpHeigt));
@@ -33,8 +41,7 @@ public class heroScript : MonoBehaviour {
 		if ((move < 0) && facingRight) {
 			Flip();
 		} else if ((move > 0) && !facingRight) {
-			Flip();
-			
+			Flip();	
 		}
 	}
 
@@ -43,5 +50,24 @@ public class heroScript : MonoBehaviour {
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+
+//	for enemy
+	void OnCollisionEnter2D (Collision2D col) {
+		if (col.gameObject.tag == "enemy") {
+			rig.position = new Vector2 (posX, posY);
+		}
+	}
+
+//	for star
+	void OnTriggerEnter2D(Collider2D col) {
+		if (col.GetComponent<PolygonCollider2D> ().tag == "star") {
+			Destroy (col.gameObject);
+			score++;
+		}
+	}
+
+	void OnGUI() {
+		GUI.Box (new Rect(0,0,100,100), "Score = " + score);		
 	}
 }
