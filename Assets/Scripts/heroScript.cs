@@ -2,10 +2,13 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class heroScript : MonoBehaviour {
 
+public class heroScript : MonoBehaviour {
 	public float speed = 10f;
 	public float jumpHeigt = 700f;
+	// Control
+	public float move = 0;
+
 	Rigidbody2D rig;
 	bool grounded = false;
 	bool facingRight = true;
@@ -28,25 +31,29 @@ public class heroScript : MonoBehaviour {
 
 		grounded = Physics2D.OverlapCircle (groundCheck.position, groundRadius, whatIsGround);
 
-		float move = Input.GetAxis ("Horizontal");
+//		float move = Input.GetAxis ("Horizontal");
 
-//		if (grounded) {			
+		if (move != 0) {
+			
 			rig.velocity = new Vector2 (move * speed, rig.velocity.y);			
-//		}
 
 
-		if (Input.GetKeyDown (KeyCode.Space) && grounded) {
-			rig.AddForce(new Vector2(0, jumpHeigt));
-		}
+			if (Input.GetKeyDown (KeyCode.Space) && grounded) {
+				rig.AddForce(new Vector2(0, jumpHeigt));
+			}
 
-		if ((move < 0) && facingRight) {
-			Flip();
-		} else if ((move > 0) && !facingRight) {
-			Flip();	
+			if ((move < 0) && facingRight) {
+				Flip();
+			} else if ((move > 0) && !facingRight) {
+				Flip();	
+			}
+
+			move = 0;
+			
 		}
 	}
 
-	void Flip() {
+	public void Flip() {
 		facingRight = !facingRight;
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
@@ -73,5 +80,12 @@ public class heroScript : MonoBehaviour {
 
 	void OnGUI() {
 		GUI.Box (new Rect(0,0,200,70), "Score = " + score);		
+	}
+		
+
+	public void mControlLeft ()
+	{
+		print ("left");
+		move = -5f;			
 	}
 }
