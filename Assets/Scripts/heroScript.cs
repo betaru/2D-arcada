@@ -33,9 +33,6 @@ public class heroScript : MonoBehaviour {
 			
 		rig.velocity = new Vector2 (move * speed, rig.velocity.y);			
 
-		if (CrossPlatformInputManager.GetButton ("Jump")) {
-			print ("Jump");
-		}
 
 		if (CrossPlatformInputManager.GetButton("Jump") && grounded) {
 			rig.AddForce(new Vector2(0, jumpHeigt));
