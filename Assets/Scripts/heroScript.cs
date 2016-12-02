@@ -6,7 +6,7 @@ using System.Collections;
 
 public class heroScript : MonoBehaviour {
 	public float speed = 10f;
-	public float jumpHeigt = 700f;
+	public float jumpHeigt = 100f;
 	Rigidbody2D rig;
 	bool grounded = false;
 	bool facingRight = true;
