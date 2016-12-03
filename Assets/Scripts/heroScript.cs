@@ -35,7 +35,9 @@ public class heroScript : MonoBehaviour {
 
 
 		if (CrossPlatformInputManager.GetButton("Jump") && grounded) {
-			rig.AddForce(new Vector2(0, jumpHeigt));
+			if (rig.IsSleeping ()) { 
+				rig.AddForce (new Vector2 (0, jumpHeigt));
+			}
 		}
 
 		if ((move < 0) && facingRight) {
